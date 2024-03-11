@@ -2,6 +2,7 @@ package com.example.phonestudentproject.service.impl;
 
 import com.example.phonestudentproject.exception.InfMsg;
 import com.example.phonestudentproject.exception.PhoneException;
+import com.example.phonestudentproject.model.DTO.RegistrationDTO;
 import com.example.phonestudentproject.model.DTO.response.CallResponseDto;
 import com.example.phonestudentproject.model.DTO.PhoneDTO;
 import com.example.phonestudentproject.model.Enum.PhoneStatusEnum;
@@ -60,7 +61,8 @@ public class PhoneServiceImpl implements PhoneService {
     }
 
     @Override
-    public void createPhoneNumber() {
+    public PhoneDTO createPhoneNumber(RegistrationDTO registrationDTO) {
+
 
     }
 

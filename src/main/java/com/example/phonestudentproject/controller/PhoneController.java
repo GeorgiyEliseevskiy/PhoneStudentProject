@@ -1,5 +1,7 @@
 package com.example.phonestudentproject.controller;
 
+import com.example.phonestudentproject.model.DTO.PhoneDTO;
+import com.example.phonestudentproject.model.DTO.RegistrationDTO;
 import com.example.phonestudentproject.model.DTO.response.CallResponseDto;
 import com.example.phonestudentproject.service.api.PhoneService;
 import lombok.AllArgsConstructor;
@@ -19,8 +21,8 @@ public class PhoneController {
     }
 
     @PostMapping("/createPhoneNumber")
-    public void createPhoneNumber() {
-        phoneService.createPhoneNumber();
+    public PhoneDTO createPhoneNumber(@RequestParam RegistrationDTO registrationDTO) {
+        return phoneService.createPhoneNumber(registrationDTO);
     }
 
     @PostMapping("/delete")
