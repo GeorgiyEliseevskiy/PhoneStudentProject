@@ -2,6 +2,7 @@ package com.example.phonestudentproject.model.entity;
 
 import com.example.phonestudentproject.model.Enum.PhoneStatusEnum;
 import com.example.phonestudentproject.model.Enum.RegionEnum;
+import com.example.phonestudentproject.model.entity.balance.Balance;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -31,9 +32,6 @@ public class Phone extends DefaultSystemAttributes {
     @Column(name = "balance", nullable = false)
     private Balance balance;
 
-    @Column(name = "probability")
-    private String probability;
-
     @Column(name = "status")
     private PhoneStatusEnum status;
 
@@ -41,10 +39,10 @@ public class Phone extends DefaultSystemAttributes {
     private RegionEnum region;
 
     //вне лабы
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "operator_id")
+   /* @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "operator_id")*/
     @Column(name = "operator", nullable = false)
-    private Operator operator;
+    private String operator;
 
     @ElementCollection
     private List<String> logCalls = new ArrayList<>();

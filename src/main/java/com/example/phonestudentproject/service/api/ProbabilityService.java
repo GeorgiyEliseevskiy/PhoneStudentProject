@@ -4,5 +4,5 @@ import com.example.phonestudentproject.model.DTO.PhoneDTO;
 
 public interface ProbabilityService {
 
-    String getProbabilitySerice(PhoneDTO phoneDtoFrom);
+    String getProbabilityCall(PhoneDTO phoneDtoFrom);
 }
