@@ -21,15 +21,12 @@ public class Balance extends DefaultSystemAttributes {
     private Long id;
 
     @OneToOne
-    @Column(name = "phone")
+    @Column(name = "phone", nullable = false)
     private Phone phone;
 
-    @Column(name = "balance")
+    @Column(name = "balance", nullable = false)
     private BigDecimal balance;
 
-    /*@OneToMany
-    private List<BalanceOperation> historyOperation;*/
-
-
-
+    @OneToMany
+    private List<BalanceOperation> historyOperation;
 }

@@ -4,9 +4,11 @@ import com.example.phonestudentproject.exception.InfMsg;
 import com.example.phonestudentproject.exception.PhoneException;
 import com.example.phonestudentproject.mapper.PhoneMapper;
 import com.example.phonestudentproject.model.DTO.RegistrationDTO;
+import com.example.phonestudentproject.model.DTO.balance.BalanceDTO;
 import com.example.phonestudentproject.model.DTO.response.CallResponseDto;
 import com.example.phonestudentproject.model.DTO.PhoneDTO;
 import com.example.phonestudentproject.model.Enum.PhoneStatusEnum;
+import com.example.phonestudentproject.model.Enum.RegionEnum;
 import com.example.phonestudentproject.model.entity.Phone;
 import com.example.phonestudentproject.repository.PhoneRepository;
 import com.example.phonestudentproject.service.api.CallService;
@@ -14,6 +16,7 @@ import com.example.phonestudentproject.service.api.PhoneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,10 +35,12 @@ public class PhoneServiceImpl implements PhoneService {
         PhoneDTO phoneDtoTo = buildPhoneDTO(phoneNumberTo);
 
         CallResponseDto callResponseDto = callService.call(phoneDtoFrom, phoneDtoTo, duration);
+
         Phone entityPhoneTo = phoneMapper.toEntity(callResponseDto.getPhoneDtoTo());
         Phone entityPhoneFrom = phoneMapper.toEntity(callResponseDto.getPhoneDtoFrom());
 
-        phoneRepository.saveAll(List.of(entityPhoneTo, entityPhoneFrom));
+        phoneRepository.save(entityPhoneTo);
+        phoneRepository.save(entityPhoneFrom);
         return callResponseDto;
     }
 
@@ -65,9 +70,20 @@ public class PhoneServiceImpl implements PhoneService {
 
     @Override
     public PhoneDTO createPhoneNumber(RegistrationDTO registrationDTO) {
-        return null;
-    }
 
+        Optional<Phone> phoneByPhoneNumber = phoneRepository.findPhoneByPhoneNumber(registrationDTO.getPhoneNumber());
+
+        if (phoneByPhoneNumber.isEmpty()) {
+            return new PhoneDTO().setPhoneNumber(registrationDTO.getPhoneNumber())
+                    .setRegion(RegionEnum.fromValue(registrationDTO.getRegion()))
+                    .setStatus(PhoneStatusEnum.WAITING)
+                    .setOperator(registrationDTO.getOperator())
+                    .setLogCalls(new ArrayList<>())
+                    .setBalance(registrationDTO.getBalanceDTO());
+        } else {
+            throw new PhoneException(InfMsg.PHONE_ALREADY_EXIST);
+        }
+    }
     @Override
     public void delete(String phoneNumber) {
 

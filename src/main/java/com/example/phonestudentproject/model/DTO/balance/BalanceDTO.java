@@ -13,7 +13,6 @@ import java.util.List;
 @Data
 public class BalanceDTO {
 
-    private PhoneDTO phoneDTO;
     private BigDecimal balance;
     private List<BalanceOperationDTO> historyOperation;
 }

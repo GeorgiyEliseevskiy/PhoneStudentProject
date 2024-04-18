@@ -20,7 +20,9 @@ import java.util.List;
 public class Phone extends DefaultSystemAttributes {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "phone_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "phone_seq_gen")
+    @SequenceGenerator(name = "phone_seq_gen", sequenceName = "phone_seq", allocationSize = 1)
     private Long id;
 
     @NotBlank
@@ -28,8 +30,8 @@ public class Phone extends DefaultSystemAttributes {
     @Column(name = "phoneNumber", nullable = false)
     private String phoneNumber;
 
-    @OneToOne
-    @Column(name = "balance", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "balance_id")
     private Balance balance;
 
     @Column(name = "status")

@@ -14,7 +14,7 @@ public class PhoneController {
 
     private final PhoneService phoneService;
 
-    @GetMapping("/call")
+    @PutMapping("/call")
     public CallResponseDto call(@RequestParam String phoneNumberFrom, @RequestParam String phoneNumberTo,
                                 @RequestParam String duration) {
         return phoneService.call(phoneNumberFrom, phoneNumberTo, duration);
