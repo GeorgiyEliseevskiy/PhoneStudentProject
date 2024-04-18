@@ -2,6 +2,7 @@ package com.example.phonestudentproject.model.entity.balance;
 
 import com.example.phonestudentproject.model.entity.DefaultSystemAttributes;
 import com.example.phonestudentproject.model.entity.Phone;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@Table(name = "balance")
 public class Balance extends DefaultSystemAttributes {
 
     @Id

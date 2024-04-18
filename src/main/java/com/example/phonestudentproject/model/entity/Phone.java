@@ -27,7 +27,7 @@ public class Phone extends DefaultSystemAttributes {
 
     @NotBlank
     @Pattern(regexp = "^\\d{10}$\n")
-    @Column(name = "phoneNumber", nullable = false)
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -45,8 +45,5 @@ public class Phone extends DefaultSystemAttributes {
     @JoinColumn(name = "operator_id")*/
     @Column(name = "operator", nullable = false)
     private String operator;
-
-    @ElementCollection
-    private List<String> logCalls = new ArrayList<>();
 
 }

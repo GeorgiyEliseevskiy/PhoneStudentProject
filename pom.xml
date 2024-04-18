@@ -48,6 +48,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
@@ -56,6 +61,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>4.27.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -99,7 +110,42 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.27.0</version>
+                <configuration>
+                    <changelogSchemaName>${profile.changelogSchemaName}</changelogSchemaName>
+                    <propertyFile>${profile.propertyFile}</propertyFile>
+                    <changeLogFile>${profile.changeLogFile}</changeLogFile>
+                    <dataDir>${profile.dataDir}</dataDir>
+                    <verbose>${profile.verbose}</verbose>
+                    <logging>${profile.logging}</logging>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+    <profile>
+        <id>local</id>
+        <activation>
+            <property>
+                <name>env</name>
+                <value>local</value>
+            </property>
+        </activation>
+        <properties>
+            <profile.propertyFile>src/main/resources/db/config/liquibase.properties</profile.propertyFile>
+            <profile.changeLogFile>src/main/resources/db/master.xml</profile.changeLogFile>
+            <profile.dataDir>src/main/resources/db/local/data</profile.dataDir>
+            <profile.verbose>false</profile.verbose>
+            <profile.logging>debug</profile.logging>
+            <profile.changelogSchemaName>public</profile.changelogSchemaName>
+        </properties>
+    </profile>
+    </profiles>
 
 </project>

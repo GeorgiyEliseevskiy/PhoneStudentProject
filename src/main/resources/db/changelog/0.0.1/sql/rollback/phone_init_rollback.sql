@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS balance_operations;
+DROP SEQUENCE IF EXISTS balance_operations_seq;
+
+DROP TABLE IF EXISTS balance;
+DROP SEQUENCE IF EXISTS balance_seq;
+
+DROP TABLE IF EXISTS phone;
+DROP SEQUENCE IF EXISTS phone_seq;

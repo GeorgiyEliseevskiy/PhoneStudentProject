@@ -23,6 +23,7 @@ public class BalanceServiceImpl implements BalanceService {
         BigDecimal balance = phoneDTO.getBalance().getBalance();
         BigDecimal spentMoney = new BigDecimal(duration);
         BigDecimal result = new BigDecimal(-1);
+
         int comparisonResult = balance.compareTo(spentMoney);
 
         if (comparisonResult > 0) {

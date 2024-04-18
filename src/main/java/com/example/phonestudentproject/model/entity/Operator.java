@@ -3,7 +3,6 @@ package com.example.phonestudentproject.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
