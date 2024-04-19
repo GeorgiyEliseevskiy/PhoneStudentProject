@@ -78,7 +78,6 @@ public class PhoneServiceImpl implements PhoneService {
                     .setRegion(RegionEnum.fromValue(registrationDTO.getRegion()))
                     .setStatus(PhoneStatusEnum.WAITING)
                     .setOperator(registrationDTO.getOperator())
-                    .setLogCalls(new ArrayList<>())
                     .setBalance(registrationDTO.getBalanceDTO());
         } else {
             throw new PhoneException(InfMsg.PHONE_ALREADY_EXIST);

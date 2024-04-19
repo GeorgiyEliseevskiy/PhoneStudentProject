@@ -20,15 +20,16 @@ public class Balance extends DefaultSystemAttributes {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "balance_id")
     private Long id;
 
-    @OneToOne
-    @Column(name = "phone", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "phone_id")
     private Phone phone;
 
     @Column(name = "balance", nullable = false)
     private BigDecimal balance;
 
-    @OneToMany
+    @OneToMany(mappedBy = "balance")
     private List<BalanceOperation> historyOperation;
 }

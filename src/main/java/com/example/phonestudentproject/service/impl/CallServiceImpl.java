@@ -10,18 +10,20 @@ import com.example.phonestudentproject.service.api.Balance.BalanceService;
 import com.example.phonestudentproject.service.api.CallService;
 import com.example.phonestudentproject.service.api.PhoneService;
 import com.example.phonestudentproject.service.api.ProbabilityService;
+import com.example.phonestudentproject.service.proxy.PhoneServiceProxy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Service
-@AllArgsConstructor
 @Slf4j
+@AllArgsConstructor
 public class CallServiceImpl implements CallService {
-    private final PhoneService phoneService; //TODO proxy - избегаем циклической зависимости
+    private final PhoneService phoneServiceProxy; //TODO proxy - избегаем циклической зависимости
     private final ProbabilityService probabilityService;
     private final BalanceService balanceService;
 
@@ -33,7 +35,7 @@ public class CallServiceImpl implements CallService {
 
     private CallResponseDto makeCall(PhoneDTO phoneDtoFrom, PhoneDTO phoneDtoTo, String duration) {
 
-        boolean checkPhoneStatus = phoneService.checkPhoneStatus(phoneDtoFrom, phoneDtoTo);
+        boolean checkPhoneStatus = phoneServiceProxy.checkPhoneStatus(phoneDtoFrom, phoneDtoTo);
 
         LocalDateTime startTime;
         LocalDateTime endTime;
@@ -44,8 +46,8 @@ public class CallServiceImpl implements CallService {
             String phoneNumberFrom = buildFullPhoneNumber(phoneDtoFrom);
             String phoneNumberTo = buildFullPhoneNumber(phoneDtoTo);
 
-            Phone phoneFrom = phoneService.getPhoneByPhoneNumber(phoneDtoFrom.getPhoneNumber());
-            Phone phoneTo = phoneService.getPhoneByPhoneNumber(phoneDtoFrom.getPhoneNumber());
+            Phone phoneFrom = phoneServiceProxy.getPhoneByPhoneNumber(phoneDtoFrom.getPhoneNumber());
+            Phone phoneTo = phoneServiceProxy.getPhoneByPhoneNumber(phoneDtoFrom.getPhoneNumber());
 
             startTime = LocalDateTime.now();
 

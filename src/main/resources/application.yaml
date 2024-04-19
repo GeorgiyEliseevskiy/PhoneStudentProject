@@ -1,11 +1,15 @@
 spring:
   datasource:
-    hikari:
-      password: 1111
-      url: jdbc:postgresql://localhost:5437/db
-      username: fgislk
+    password: 1111
+    url: jdbc:postgresql://localhost:5437/db
+    username: fgislk
   jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     database-platform: org.hibernate.dialect.PostgresSQLDialect
     hibernate:
       ddl-auto: none
     show-sql: true
+  liquibase:
+    change-log: classpath:/db/master.xml

@@ -4,6 +4,7 @@ import com.example.phonestudentproject.model.entity.DefaultSystemAttributes;
 import com.example.phonestudentproject.model.entity.balance.Balance;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
 
 import java.time.OffsetDateTime;
 
@@ -17,11 +18,11 @@ public class BalanceOperation extends DefaultSystemAttributes {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "balance_operation_id")
     private Long id;
 
-    @ManyToOne
-    @Column(name = "balance")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "balance_id")
     private Balance balance;
 
     @Column(name = "timeOperation")

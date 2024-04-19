@@ -24,7 +24,8 @@ public class ProbabilityCallServiceImpl implements ProbabilityService {
     }
 
     private double getProbabilityFromLogs(PhoneDTO phoneDtoFrom) {
-        int size = phoneDtoFrom.getLogCalls().size();
+        // int size = phoneDtoFrom.getLogCalls().size();
+        int size = 25; //TODO Добавить логи вызовов
         double countProbability = 0.0;
 
         if (size > 10 && size < 20) {
