@@ -4,7 +4,11 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="changelog/0.0.1.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/0.0.2.xml" relativeToChangelogFile="true"/>
+    <changeSet id="20-04-2024 06:08:00" author="geliseevskiy">
+        <sqlFile path="0.0.2/sql/operator_init.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="0.0.2/sql/rollback/operator_init_rollback.sql" relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
 
 </databaseChangeLog>

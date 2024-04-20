@@ -14,6 +14,7 @@ import java.time.OffsetDateTime;
 @Getter
 @Setter
 @Builder
+@Table(name = "balance_operation")
 public class BalanceOperation extends DefaultSystemAttributes {
 
     @Id

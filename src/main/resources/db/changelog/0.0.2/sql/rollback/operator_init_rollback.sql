@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS operator;
+DROP SEQUENCE IF EXISTS operator_seq;

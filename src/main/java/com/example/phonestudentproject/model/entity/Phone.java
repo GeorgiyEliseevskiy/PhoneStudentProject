@@ -17,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@Table(name = "phone")
 public class Phone extends DefaultSystemAttributes {
 
     @Id
@@ -40,7 +41,6 @@ public class Phone extends DefaultSystemAttributes {
     @Column(name = "region")
     private RegionEnum region;
 
-    //вне лабы
    /* @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "operator_id")*/
     @Column(name = "operator", nullable = false)

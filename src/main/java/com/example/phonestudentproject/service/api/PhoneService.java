@@ -7,8 +7,6 @@ import com.example.phonestudentproject.model.entity.Phone;
 
 public interface PhoneService {
     CallResponseDto call(String phoneNumberFrom, String phoneNumberTo, String duration);
-    PhoneDTO createPhoneNumber(RegistrationDTO registrationDTO);
+    Phone createPhoneNumber(RegistrationDTO registrationDTO);
     void delete(String phoneNumber);
-    boolean checkPhoneStatus(PhoneDTO phoneDtoFrom, PhoneDTO phoneDtoTo);
-    Phone getPhoneByPhoneNumber(String phoneNumber);
 }

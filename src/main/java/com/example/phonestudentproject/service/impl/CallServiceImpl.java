@@ -2,18 +2,20 @@ package com.example.phonestudentproject.service.impl;
 
 import com.example.phonestudentproject.exception.InfMsg;
 import com.example.phonestudentproject.exception.PhoneException;
+import com.example.phonestudentproject.model.DTO.ConversationDTO;
 import com.example.phonestudentproject.model.DTO.PhoneDTO;
 import com.example.phonestudentproject.model.DTO.response.CallResponseDto;
 import com.example.phonestudentproject.model.Enum.PhoneStatusEnum;
 import com.example.phonestudentproject.model.entity.Phone;
+import com.example.phonestudentproject.service.impl.command.*;
+import com.example.phonestudentproject.service.impl.decorator.BalanceServiceDecorator;
+import com.example.phonestudentproject.service.impl.facade.ConversationFacade;
 import com.example.phonestudentproject.service.api.Balance.BalanceService;
 import com.example.phonestudentproject.service.api.CallService;
-import com.example.phonestudentproject.service.api.PhoneService;
+import com.example.phonestudentproject.service.api.utils.PhoneServiceUtils;
 import com.example.phonestudentproject.service.api.ProbabilityService;
-import com.example.phonestudentproject.service.proxy.PhoneServiceProxy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -23,9 +25,11 @@ import java.time.LocalDateTime;
 @Slf4j
 @AllArgsConstructor
 public class CallServiceImpl implements CallService {
-    private final PhoneService phoneServiceProxy; //TODO proxy - избегаем циклической зависимости
+
     private final ProbabilityService probabilityService;
-    private final BalanceService balanceService;
+    private final PhoneServiceUtils phoneServiceUtils;
+    private final BalanceServiceDecorator balanceService;
+    private final ConversationFacade conversationFacade;
 
     @Override
     public CallResponseDto call(PhoneDTO phoneDtoFrom, PhoneDTO phoneDtoTo, String duration) {
@@ -34,8 +38,14 @@ public class CallServiceImpl implements CallService {
     }
 
     private CallResponseDto makeCall(PhoneDTO phoneDtoFrom, PhoneDTO phoneDtoTo, String duration) {
+        boolean checkPhoneStatus = phoneServiceUtils.checkPhoneStatus(phoneDtoFrom, phoneDtoTo);
 
-        boolean checkPhoneStatus = phoneServiceProxy.checkPhoneStatus(phoneDtoFrom, phoneDtoTo);
+        ManagementCommandLogger logger = new ManagementCommandLogger(
+                new CommandLoggerWARN(),
+                new CommandLoggerDEBUG(),
+                new CommandLoggerERROR(),
+                new CommandLoggerInfo()
+        );
 
         LocalDateTime startTime;
         LocalDateTime endTime;
@@ -43,31 +53,34 @@ public class CallServiceImpl implements CallService {
         double probabilityCall = Double.parseDouble(probabilityService.getProbabilityCall(phoneDtoTo));
 
         if (checkPhoneStatus && probabilityCall > 40) {
-            String phoneNumberFrom = buildFullPhoneNumber(phoneDtoFrom);
-            String phoneNumberTo = buildFullPhoneNumber(phoneDtoTo);
 
-            Phone phoneFrom = phoneServiceProxy.getPhoneByPhoneNumber(phoneDtoFrom.getPhoneNumber());
-            Phone phoneTo = phoneServiceProxy.getPhoneByPhoneNumber(phoneDtoFrom.getPhoneNumber());
+            ConversationDTO conversationDTO = conversationFacade.getConversationDTO(phoneDtoTo, phoneDtoFrom);
 
             startTime = LocalDateTime.now();
 
-            log.info("Вызов абонента: " + phoneNumberTo);
-            makeCallBetweenPhones(phoneFrom, phoneTo, phoneNumberFrom, phoneNumberTo);
+            logger.infoMessage(String.format("Вызов абонента: " + conversationDTO.getPhoneNumberTo()));
 
-            log.info(String.format("Cоедининение с абнонентом %s было установленно ", phoneNumberTo));
+            makeCallBetweenPhones(conversationDTO.getPhoneFrom(),
+                    conversationDTO.getPhoneTo(),
+                    conversationDTO.getPhoneNumberFrom(),
+                    conversationDTO.getPhoneNumberTo());
+
+            logger.infoMessage(String.format("Cоедининение с абнонентом %s было установленно ", conversationDTO.getPhoneNumberTo()));
+
             startAndSustainConversation(phoneDtoFrom, phoneDtoTo, duration);
 
-            setAndLogStatusForWaiting(phoneDtoFrom, phoneDtoTo, phoneNumberFrom, phoneNumberTo);
+            setAndLogStatusForWaiting(phoneDtoFrom, phoneDtoTo, conversationDTO.getPhoneNumberFrom(),
+                    conversationDTO.getPhoneNumberTo());
 
-            log.info(String.format("Вызов абонента %s завершен. Разговор продлился: %s", phoneTo, duration));
+            logger.infoMessage(String.format("Вызов абонента %s завершен. Разговор продлился: %s", conversationDTO.getPhoneNumberTo(), duration));
             endTime = LocalDateTime.now();
 
             return new CallResponseDto.Builder()
                     .startTime(startTime)
                     .endTime(endTime)
                     .timeCall(Duration.between(endTime, startTime))
-                    .phoneFrom(phoneNumberFrom)
-                    .phoneTo(phoneNumberTo)
+                    .phoneFrom(conversationDTO.getPhoneNumberFrom())
+                    .phoneTo(conversationDTO.getPhoneNumberTo())
                     .phoneDtoFrom(phoneDtoFrom)
                     .phoneDtoTo(phoneDtoTo)
                     .isSuccessfulCall(true)
@@ -85,7 +98,8 @@ public class CallServiceImpl implements CallService {
         }
     }
 
-    private static void setAndLogStatusForWaiting(PhoneDTO phoneDtoFrom, PhoneDTO phoneDtoTo, String phoneNumberFrom, String phoneNumberTo) {
+    private static void setAndLogStatusForWaiting(PhoneDTO phoneDtoFrom, PhoneDTO phoneDtoTo,
+                                                  String phoneNumberFrom, String phoneNumberTo) {
         phoneDtoFrom.setStatus(PhoneStatusEnum.WAITING);
         phoneDtoTo.setStatus(PhoneStatusEnum.WAITING);
 
@@ -118,11 +132,5 @@ public class CallServiceImpl implements CallService {
         } catch (InterruptedException e) {
             throw new PhoneException(InfMsg.CONNECTION_NOT_BE_ESTABLISHED);
         }
-    }
-
-    private String buildFullPhoneNumber(PhoneDTO phoneDtoTo) {
-        String phoneNumber = phoneDtoTo.getPhoneNumber();
-        String value = phoneDtoTo.getRegion().getValue();
-        return value + " " + phoneNumber;
     }
 }

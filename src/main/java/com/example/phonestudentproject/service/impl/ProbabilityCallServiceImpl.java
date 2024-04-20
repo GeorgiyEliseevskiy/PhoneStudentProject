@@ -2,6 +2,10 @@ package com.example.phonestudentproject.service.impl;
 
 import com.example.phonestudentproject.model.DTO.PhoneDTO;
 import com.example.phonestudentproject.service.api.ProbabilityService;
+import com.example.phonestudentproject.service.api.strategy.ProbabilityStrategy;
+import com.example.phonestudentproject.service.impl.factory.ProbabilityStrategyFactory;
+import com.example.phonestudentproject.service.impl.strategy.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -9,8 +13,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Service
+@RequiredArgsConstructor
 public class ProbabilityCallServiceImpl implements ProbabilityService {
 
+    private final ProbabilityStrategyFactory strategyFactory;
     @Override
     public String getProbabilityCall(PhoneDTO phoneDtoFrom) {
 
@@ -25,19 +31,14 @@ public class ProbabilityCallServiceImpl implements ProbabilityService {
 
     private double getProbabilityFromLogs(PhoneDTO phoneDtoFrom) {
         // int size = phoneDtoFrom.getLogCalls().size();
-        int size = 25; //TODO Добавить логи вызовов
+
+        ProbabilityCalculator calculator;
+
+        int size = 40; //TODO Добавить логи вызовов
         double countProbability = 0.0;
 
-        if (size > 10 && size < 20) {
-           countProbability += 10;
-       } else if (size > 20 && size < 30) {
-            countProbability +=15;
-        } else if (size > 30 && size < 40) {
-            countProbability +=20;
-        } else {
-            countProbability +=5;
-        }
-        return countProbability;
+        ProbabilityStrategy probabilityStrategy = strategyFactory.getStrategy(size);
+        return probabilityStrategy.calculateProbability(size);
     }
 
     private Double getProbabilityFromDate() {
