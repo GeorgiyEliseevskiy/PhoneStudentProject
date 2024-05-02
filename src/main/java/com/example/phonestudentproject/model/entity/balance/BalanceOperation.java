@@ -1,12 +1,9 @@
 package com.example.phonestudentproject.model.entity.balance;
 
-import com.example.phonestudentproject.model.entity.DefaultSystemAttributes;
-import com.example.phonestudentproject.model.entity.balance.Balance;
-import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.validator.internal.util.stereotypes.Lazy;
 
-import java.time.OffsetDateTime;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @AllArgsConstructor
@@ -15,17 +12,18 @@ import java.time.OffsetDateTime;
 @Setter
 @Builder
 @Table(name = "balance_operation")
-public class BalanceOperation extends DefaultSystemAttributes {
+public class BalanceOperation implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "balance_operation_id")
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "balance_operation_seq_gen")
+    @Column(name = "balance_operation_id", nullable = false)
+    @SequenceGenerator(name = "balance_operation_seq_gen", sequenceName = "balance_operation_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "balance_id")
     private Balance balance;
 
-    @Column(name = "timeOperation")
-    private OffsetDateTime timeOperation;
+    @Column(name = "operation_date")
+    private String timeOperation;
 }

@@ -1,6 +1,5 @@
 package com.example.phonestudentproject.controller;
 
-import com.example.phonestudentproject.model.DTO.PhoneDTO;
 import com.example.phonestudentproject.model.DTO.RegistrationDTO;
 import com.example.phonestudentproject.model.DTO.response.CallResponseDto;
 import com.example.phonestudentproject.model.entity.Phone;
@@ -8,6 +7,7 @@ import com.example.phonestudentproject.service.api.PhoneService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,7 +26,8 @@ public class PhoneController {
 
     @PostMapping("/createPhoneNumber")
     @Operation(summary = "Создать телефон")
-    public Phone createPhoneNumber(@RequestParam RegistrationDTO registrationDTO) {
+    @Transactional
+    public Phone createPhoneNumber(@RequestBody RegistrationDTO registrationDTO) {
         return phoneService.createPhoneNumber(registrationDTO);
     }
 

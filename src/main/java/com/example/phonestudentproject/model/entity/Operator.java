@@ -1,7 +1,9 @@
 package com.example.phonestudentproject.model.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
+
+import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -10,7 +12,7 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "operator")
-public class Operator extends DefaultSystemAttributes{
+public class Operator extends DefaultSystemAttributes implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

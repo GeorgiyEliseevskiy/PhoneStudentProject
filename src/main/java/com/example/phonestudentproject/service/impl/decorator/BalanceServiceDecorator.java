@@ -8,7 +8,6 @@ import com.example.phonestudentproject.repository.BalanceRepository;
 import com.example.phonestudentproject.service.api.Balance.BalanceService;
 import com.example.phonestudentproject.service.impl.Balance.BalanceServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

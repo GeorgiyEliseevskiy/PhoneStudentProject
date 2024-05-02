@@ -1,0 +1,5 @@
+ALTER TABLE IF EXISTS balance
+ALTER COLUMN phone_id TYPE VARCHAR(20);
+
+ALTER TABLE IF EXISTS balance_operations
+ALTER COLUMN operation_date TYPE VARCHAR(100);

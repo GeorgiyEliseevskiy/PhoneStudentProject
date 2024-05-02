@@ -1,7 +1,6 @@
 package com.example.phonestudentproject.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+import javax.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -18,6 +17,10 @@ public class DefaultSystemAttributes {
     @CreatedDate
     private Date createDate;
 
+    @Column(
+            name = "modify_dttm",
+            updatable = true
+    )
     @LastModifiedDate
     private Date modifyDate;
 

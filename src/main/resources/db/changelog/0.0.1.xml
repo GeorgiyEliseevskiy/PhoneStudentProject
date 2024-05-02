@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="18-04-2024 16:08:00" author="geliseevskiy">
+    <changeSet id="18-04-2024 16:45:00" author="geliseevskiy">
         <sqlFile path="0.0.1/sql/phone_init.sql" relativeToChangelogFile="true"/>
         <rollback>
             <sqlFile path="0.0.1/sql/rollback/phone_init_rollback.sql" relativeToChangelogFile="true"/>

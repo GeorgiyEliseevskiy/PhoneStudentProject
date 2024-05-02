@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface BalanceRepository extends JpaRepository<Balance, Long> {
 
     @Query("SELECT b FROM Balance b " +
-            "JOIN b.phone p " +
-            "WHERE p.phoneNumber = :phoneNumber")
+            "WHERE b.phoneNumber = :phoneNumber")
     Optional<Balance> findBalanceByPhoneNumber(@Param("phoneNumber") String phoneNumber);
 }

@@ -9,5 +9,6 @@ import java.util.List;
 public class BalanceDTO {
 
     private BigDecimal balance;
+    private String phoneNumber;
     private List<BalanceOperationDTO> historyOperation;
 }

@@ -1,13 +1,12 @@
 package com.example.phonestudentproject.model.entity.balance;
 
 import com.example.phonestudentproject.model.entity.DefaultSystemAttributes;
-import com.example.phonestudentproject.model.entity.Phone;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -16,20 +15,20 @@ import java.util.List;
 @Setter
 @Builder
 @Table(name = "balance")
-public class Balance extends DefaultSystemAttributes {
+public class Balance extends DefaultSystemAttributes implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "balance_id")
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "balance_seq_gen")
+    @SequenceGenerator(name = "balance_seq_gen", sequenceName = "balance_seq", allocationSize = 1)
+    @Column(name = "balance_id", nullable = false)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "phone_id")
-    private Phone phone;
+    @Column(name = "phone_id")
+    private String phoneNumber;
 
     @Column(name = "balance", nullable = false)
     private BigDecimal balance;
 
-    @OneToMany(mappedBy = "balance")
-    private List<BalanceOperation> historyOperation;
+    @OneToMany(mappedBy = "balance", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<BalanceOperation> historyOperation;
 }

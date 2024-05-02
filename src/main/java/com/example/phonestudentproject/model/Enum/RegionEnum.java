@@ -1,6 +1,6 @@
 package com.example.phonestudentproject.model.Enum;
 
-import io.micrometer.common.util.StringUtils;
+import io.micrometer.core.instrument.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

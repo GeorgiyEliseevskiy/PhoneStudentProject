@@ -1,3 +1,4 @@
+
 spring:
   datasource:
     password: 1111
@@ -7,9 +8,31 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
     database-platform: org.hibernate.dialect.PostgresSQLDialect
     hibernate:
       ddl-auto: none
     show-sql: true
   liquibase:
     change-log: classpath:/db/master.xml
+
+springdoc:
+  show-actuator: true
+
+server:
+  tomcat:
+    relaxed-query-chars: ['{','}']
+
+
+logging:
+  level:
+    org.springframework.web: INFO
+    feign: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: INFO
+    root: info
+  pattern:
+    console: '%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint}
+            %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint}
+            %clr([%15.15t] [processId-%X{processId}]){faint} %clr(%-40.40logger{39}){cyan}
+            %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}'

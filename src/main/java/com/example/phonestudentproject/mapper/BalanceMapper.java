@@ -9,7 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {PhoneMapper.class, BalanceOperationMapper.class})
 public interface BalanceMapper {
 
-    @Mapping(target = "phone", ignore = true)
     @Mapping(source = "balance", target = "balance")
     @Mapping(target = "historyOperation", ignore = true)
     Balance toEntity(BalanceDTO balanceDTO);
