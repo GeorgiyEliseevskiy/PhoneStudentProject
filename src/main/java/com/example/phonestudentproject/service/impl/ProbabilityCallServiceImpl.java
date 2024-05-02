@@ -17,6 +17,7 @@ import java.time.LocalTime;
 public class ProbabilityCallServiceImpl implements ProbabilityService {
 
     private final ProbabilityStrategyFactory strategyFactory;
+
     @Override
     public String getProbabilityCall(PhoneDTO phoneDtoFrom) {
 

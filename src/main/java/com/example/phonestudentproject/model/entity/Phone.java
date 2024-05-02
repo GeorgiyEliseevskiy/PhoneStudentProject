@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 
@@ -17,6 +18,7 @@ import java.io.Serializable;
 @Setter
 @Builder
 @Table(name = "phone")
+@EntityListeners(AuditingEntityListener.class)
 public class Phone extends DefaultSystemAttributes implements Serializable {
 
     @Id

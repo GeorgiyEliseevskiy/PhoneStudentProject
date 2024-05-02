@@ -14,6 +14,6 @@ public class CallServiceUtilsImpl implements CallServiceUtils {
     public String buildFullPhoneNumber(PhoneDTO phoneDtoTo) {
         String phoneNumber = phoneDtoTo.getPhoneNumber();
         String value = phoneDtoTo.getRegion().getValue();
-        return value + " " + phoneNumber;
+        return value + phoneNumber;
     }
 }

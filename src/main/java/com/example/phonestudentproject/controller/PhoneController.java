@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Контроллер для взаимодействия с API телефон.
+ */
 @RestController
 @RequestMapping("/phone")
 @AllArgsConstructor
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class PhoneController {
 
     private final PhoneService phoneService;
+
     @PutMapping("/call")
     @Operation(summary = "Позвонить по номеру телефона")
     public CallResponseDto call(@RequestParam String phoneNumberFrom, @RequestParam String phoneNumberTo,

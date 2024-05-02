@@ -3,8 +3,6 @@ package com.example.phonestudentproject.service.impl.facade;
 import com.example.phonestudentproject.model.DTO.ConversationDTO;
 import com.example.phonestudentproject.model.DTO.PhoneDTO;
 import com.example.phonestudentproject.model.entity.Phone;
-import com.example.phonestudentproject.service.api.CallService;
-import com.example.phonestudentproject.service.api.PhoneService;
 import com.example.phonestudentproject.service.api.utils.CallServiceUtils;
 import com.example.phonestudentproject.service.api.utils.PhoneServiceUtils;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +20,7 @@ public class ConversationFacade {
         String phoneNumberTo = callServiceUtils.buildFullPhoneNumber(phoneDtoTo);
 
         Phone phoneFrom = phoneServiceUtils.getPhoneByPhoneNumber(phoneDtoFrom.getPhoneNumber());
-        Phone phoneTo = phoneServiceUtils.getPhoneByPhoneNumber(phoneDtoFrom.getPhoneNumber());
+        Phone phoneTo = phoneServiceUtils.getPhoneByPhoneNumber(phoneDtoTo.getPhoneNumber());
 
         return new ConversationDTO()
                 .setPhoneFrom(phoneFrom)

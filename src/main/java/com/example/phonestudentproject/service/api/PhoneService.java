@@ -3,6 +3,7 @@ package com.example.phonestudentproject.service.api;
 import com.example.phonestudentproject.model.DTO.PhoneDTO;
 import com.example.phonestudentproject.model.DTO.RegistrationDTO;
 import com.example.phonestudentproject.model.DTO.response.CallResponseDto;
+import com.example.phonestudentproject.model.Enum.PhoneStatusEnum;
 import com.example.phonestudentproject.model.entity.Phone;
 
 public interface PhoneService {

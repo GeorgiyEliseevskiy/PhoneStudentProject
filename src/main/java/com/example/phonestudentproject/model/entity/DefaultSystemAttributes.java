@@ -19,7 +19,7 @@ public class DefaultSystemAttributes {
 
     @Column(
             name = "modify_dttm",
-            updatable = true
+            nullable = false
     )
     @LastModifiedDate
     private Date modifyDate;

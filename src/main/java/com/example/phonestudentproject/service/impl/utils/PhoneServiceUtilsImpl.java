@@ -36,4 +36,9 @@ public class PhoneServiceUtilsImpl implements PhoneServiceUtils {
             throw new PhoneException(InfMsg.PHONE_NOT_FOUND);
         }
     }
+
+    @Override
+    public void setPhoneStatusRuntime(PhoneStatusEnum status, Long id) {
+        phoneRepository.updatePhoneStatus(status, id);
+    }
 }
