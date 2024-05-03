@@ -9,6 +9,9 @@ import lombok.experimental.Accessors;
 
 import java.util.List;
 
+/**
+ * ДТО содержащая информацию о телефоне.
+ */
 @Data
 @Accessors(chain = true)
 public class PhoneDTO {
@@ -17,7 +20,7 @@ public class PhoneDTO {
     private String phoneNumber;
     @Schema(description = "Баланс")
     private BalanceDTO balance;
-    @Schema(description = "Вероятность поступления")
+    @Schema(description = "Вероятность поступления звонка")
     private String probability;
     @Schema(description = "Оператор")
     private String operator;

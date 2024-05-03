@@ -29,4 +29,9 @@ public interface PhoneRepository extends JpaRepository<Phone, Long> {
             "SET p.status =:status " +
             "WHERE p.id =:id")
     void updatePhoneStatus(@Param("status") PhoneStatusEnum status, @Param("id") Long id);
+
+    @Query("SELECT p.id " +
+            "FROM Phone p " +
+            "WHERE p.phoneNumber =:phoneNumber")
+    Optional<Long> findPhoneIdByPhoneNumber(@Param("phoneNumber") String phoneNumber);
 }

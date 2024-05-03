@@ -3,11 +3,14 @@ package com.example.phonestudentproject.service.impl.Balance;
 import com.example.phonestudentproject.mapper.BalanceMapper;
 import com.example.phonestudentproject.model.DTO.PhoneDTO;
 import com.example.phonestudentproject.model.DTO.balance.BalanceDTO;
-
+import com.example.phonestudentproject.model.Enum.PhoneStatusEnum;
+import com.example.phonestudentproject.model.entity.Phone;
 import com.example.phonestudentproject.model.entity.balance.Balance;
 import com.example.phonestudentproject.repository.BalanceRepository;
-import com.example.phonestudentproject.repository.PhoneRepository;
 import com.example.phonestudentproject.service.api.Balance.BalanceService;
+import com.example.phonestudentproject.service.api.PhoneService;
+import com.example.phonestudentproject.service.api.utils.PhoneServiceUtils;
+import com.example.phonestudentproject.service.impl.PhoneServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +23,10 @@ public class BalanceServiceImpl implements BalanceService {
 
     private final BalanceRepository balanceRepository;
     private final BalanceMapper balanceMapper;
-    private final PhoneRepository phoneRepository;
+    private final PhoneServiceUtils phoneService;
 
     @Override
+    @Deprecated
     public BigDecimal calculateBalanceAfterCall(PhoneDTO phoneDTO, String duration) {
         BigDecimal balance = phoneDTO.getBalance().getBalance();
         BigDecimal spentMoney = new BigDecimal(duration);
@@ -34,7 +38,6 @@ public class BalanceServiceImpl implements BalanceService {
             return balance.subtract(spentMoney);
         } else {
             return result;
-            //TODO аспекты ставят статус
         }
     }
 
@@ -42,6 +45,7 @@ public class BalanceServiceImpl implements BalanceService {
     public BalanceDTO getBalanceFromPhoneNumber(String phoneNumber) {
         Optional<Balance> balance = balanceRepository.findBalanceByPhoneNumber(phoneNumber);
         if (balance.isPresent()) {
+            balanceMapper.toDto(balance.get());
             return balanceMapper.toDto(balance.get());
         } else {
             return new BalanceDTO();
@@ -54,9 +58,14 @@ public class BalanceServiceImpl implements BalanceService {
         if (balanceOptional.isPresent()) {
             Balance balance = balanceOptional.get();
             BigDecimal addBalance = balance.getBalance().add(BigDecimal.valueOf(Long.parseLong(sum)));
-            balance.setBalance(addBalance);
+            balanceRepository.updateSumByPhoneNumber(phoneNumber, addBalance);
+
+            Phone phoneByPhoneNumber = phoneService.getPhoneByPhoneNumber(phoneNumber);
+
+            if (addBalance.intValue() > 0 && PhoneStatusEnum.BLOCKED.equals(phoneByPhoneNumber.getStatus())) {
+                phoneByPhoneNumber.setStatus(PhoneStatusEnum.WAITING);
+                phoneService.setPhoneStatusRuntime(PhoneStatusEnum.WAITING, phoneByPhoneNumber.getId());
+            }
         }
     }
-
 }
-    // TODO подсчет баланса во время разговора. Прерыванине разговора через аспекты (Ставим статус блокдет если баланс становится меньше 0)

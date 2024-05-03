@@ -1,9 +1,12 @@
 package com.example.phonestudentproject.model.DTO.balance;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
+import java.time.OffsetDateTime;
+
+@Data
 public class BalanceOperationDTO {
 
-    @Schema(description = "Время выполнения операции", example = "2024-04-30T13:57:11")
-    private String timeOperation;
+    private String operationDate;
+    private OffsetDateTime modifyDate;
 }

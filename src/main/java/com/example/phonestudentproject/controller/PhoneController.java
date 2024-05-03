@@ -35,7 +35,7 @@ public class PhoneController {
         return phoneService.createPhoneNumber(registrationDTO);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     @Operation(summary = "Удалить номер телефона")
     public void delete(@RequestParam String phoneNumber) {
         phoneService.delete(phoneNumber);

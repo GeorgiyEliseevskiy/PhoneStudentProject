@@ -1,6 +1,8 @@
 package com.example.phonestudentproject.model.entity.balance;
 
+import com.example.phonestudentproject.model.entity.DefaultSystemAttributes;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,8 +13,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Builder
-@Table(name = "balance_operation")
-public class BalanceOperation implements Serializable {
+@Table(name = "balance_operations")
+public class BalanceOperation extends DefaultSystemAttributes implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "balance_operation_seq_gen")
@@ -25,5 +27,5 @@ public class BalanceOperation implements Serializable {
     private Balance balance;
 
     @Column(name = "operation_date")
-    private String timeOperation;
+    private String operationDate;
 }

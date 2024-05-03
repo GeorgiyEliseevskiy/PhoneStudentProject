@@ -10,7 +10,6 @@ import com.example.phonestudentproject.model.Enum.PhoneStatusEnum;
 import com.example.phonestudentproject.model.Enum.RegionEnum;
 import com.example.phonestudentproject.model.entity.Phone;
 import com.example.phonestudentproject.repository.PhoneRepository;
-import com.example.phonestudentproject.service.api.CallService;
 import com.example.phonestudentproject.service.api.PhoneService;
 import com.example.phonestudentproject.service.api.utils.PhoneServiceUtils;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Реализация интерфейса для работы с телефоном.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -38,7 +40,6 @@ public class PhoneServiceImpl implements PhoneService {
         return callService.call(phoneDtoFrom, phoneDtoTo, duration);
     }
 
-    //TODO Аспект, ошибка - отчет
     private PhoneDTO buildPhoneDTO(String phoneNumber) {
         Phone phone = phoneServiceUtils.getPhoneByPhoneNumber(phoneNumber);
         return phoneMapper.toDto(phone);
@@ -47,7 +48,6 @@ public class PhoneServiceImpl implements PhoneService {
     @Override
     public Phone createPhoneNumber(RegistrationDTO registrationDTO) {
 
-        //TODO - отчет
         Optional<Phone> phoneByPhoneNumber = phoneRepository.findPhoneByPhoneNumber(registrationDTO.getPhoneNumber());
 
         if (!phoneByPhoneNumber.isPresent()) {
@@ -69,6 +69,15 @@ public class PhoneServiceImpl implements PhoneService {
 
     @Override
     public void delete(String phoneNumber) {
+
+        Optional<Phone> phoneByPhoneNumber = phoneRepository.findPhoneByPhoneNumber(phoneNumber);
+
+        if (phoneByPhoneNumber.isPresent()) {
+            phoneRepository.delete(phoneByPhoneNumber.get());
+        } else {
+            throw new PhoneException(InfMsg.PHONE_NOT_FOUND);
+        }
+
 
     }
 }

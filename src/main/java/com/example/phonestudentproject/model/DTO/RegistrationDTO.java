@@ -1,34 +1,28 @@
 package com.example.phonestudentproject.model.DTO;
 
 import com.example.phonestudentproject.model.DTO.balance.BalanceDTO;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * ДТО содержащая информацию необходимую для регистрации телефона.
+ */
 @Data
 public class RegistrationDTO {
 
-    /**
-     * Номер телефона.
-     */
+    @Schema(description = "Номер телефона")
     private String phoneNumber;
 
-    /**
-     * Баланас.
-     */
+    @Schema(description = "Баланс")
     private BalanceDTO balanceDTO;
 
-    /**
-     * Статус.
-     */
+    @Schema(description = "Статус")
     private String status;
 
-    /**
-     * Регион.
-     */
+    @Schema(description = "Регион")
     private String region;
 
-    /**
-     * Оператор.
-     */
+    @Schema(description = "Оператор")
     private String operator;
 
 }
