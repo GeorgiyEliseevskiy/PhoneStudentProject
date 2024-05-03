@@ -32,7 +32,7 @@ public class Phone extends DefaultSystemAttributes implements Serializable {
     private String phoneNumber;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "phone_id", referencedColumnName = "phone_id", updatable = false, insertable = false)
+    @JoinColumn(name = "phone_number", referencedColumnName = "phone_id", updatable = false, insertable = false)
     private Balance balance;
 
     @Column(name = "status")
